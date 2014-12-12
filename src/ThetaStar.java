@@ -29,9 +29,9 @@ public class ThetaStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
         
         openList.add(start);
         
-        // Run while the open list is not empty (if it is, then the destination was never found) and
-        // while the open list does not contain the destination node (once it has the destination node
-        // the path has been found).
+        // Run while the open list is not empty (if it is, then the destination was never found)
+        // and while the open list does not contain the destination node (once it has the
+        // destination node the path has been found).
         while(!openList.isEmpty()) {
             
             GridNode node = openList.remove();
@@ -45,37 +45,33 @@ public class ThetaStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
             
             // When diagonalCounter is even, then the neighbor is a diagonal neighbor
             int diagonalCounter = 0;
-            boolean diagonalNode = false;
+            boolean diagonalNode;
             
             // Find neighbors in the 3D array
             for(int i = -1; i < 2; i++) {
                 for(int j = -1; j < 2; j++) {   
                     if(i != 0 || j != 0) {
                         try {
-                            //E neighbor = searchArea[node.index()/searchArea[0].length+i][node.index()%searchArea[0].length+j];
-                            GridNode neighbor = searchArea.get(node.index()/searchArea.get(0).size() + i).get(node.index()%searchArea.get(0).size() + j);
+                            GridNode neighbor =
+                                searchArea.get(node.index()/searchArea.get(0).size() + i).
+                                           get(node.index()%searchArea.get(0).size() + j);
                             
-                            diagonalNode = (diagonalCounter % 2 == 0) ? true : false;
+                            diagonalNode = (diagonalCounter % 2 == 0);
                              
-                            // If the neighbor has not been added to the list, then update it's parent,
-                            // h, and g values. Otherwise, if it has been added, then check to see if
-                            // taking the current path is a shorter option and update the parent, h, and
-                            // g values if it is a better option.
+                            // If the neighbor has not been added to the list, then update it's
+                            // parent, h, and g values. Otherwise, if it has been added, then check
+                            // to see if taking the current path is a shorter option and update the
+                            // parent, h, and g values if it is a better option.
                             if(closedList.contains(neighbor) || !neighbor.walkable()) {
-                                ; // do nothing
+                                ;// do nothing
                             }
                             else if(!openList.contains(neighbor)) {
                                 // Update the parent, g, and h values of the neighbor nodes
                                 neighbor.setParent(node);
-                                     
-                                // Check whether the neighbor is a diagonal neighbor to add
-                                // the nodeDistance * sqrt(2). Otherwise just add the nodeDistance.
-                                //neighbor.g = diagonalNode ? node.g + nodeDistance * 1.4 : node.g + nodeDistance;
+
                                 neighbor.setG(diagonalNode ? node.g() + 14 : node.g() + 10);
                                  
                                 // Use Manhattan method to set the h value of the neighbor
-                                //neighbor.h = nodeDistance * ((dest.index()/searchArea[0].length - neighbor.index()/searchArea[0].length) + 
-                                //                              (dest.index()%searchArea[0].length - neighbor.index()%searchArea[0].length));
                                 int searchAreaSize = searchArea.get(0).size();
                                 neighbor.setH(10 * (dest.index()/searchAreaSize -
                                                     neighbor.index()/searchAreaSize +
@@ -86,9 +82,9 @@ public class ThetaStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
                             }
                             else {
                                 if(diagonalNode && (node.g() + 14) < neighbor.g()) {
-                                    // If using the current path's neighbor g value is less than the existing
-                                    // neighbor's g value, then change the parent to the current node and update
-                                    // the g value.
+                                    // If using the current path's neighbor g value is less than
+                                    // the existing neighbor's g value, then change the parent to
+                                    // the current node and update the g value.
                                     neighbor.setParent(node);
                                     
                                     neighbor.setG(node.g() + 14);
@@ -116,7 +112,145 @@ public class ThetaStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
         }
         return null;
     }
-    
+
+    public boolean lineOfSight(GridNode node0, GridNode node1, List<List<GridNode>> searchArea) {
+        int searchAreaSize = searchArea.get(0).size();
+        int xNode0 = node0.index%searchAreaSize;
+        int yNode0 = node0.index/searchAreaSize;
+        int xNode1 = node1.index%searchAreaSize;
+        int yNode1 = node1.index/searchAreaSize;
+
+        int xDistance = xNode1 - xNode0;
+        int yDistance = yNode1 - yNode0;
+
+        int f = 0;
+        int yIncrement;
+        int xIncrement;
+
+        // Determines the direction to increment the y moving from node0 to node1
+        if(yDistance < 0) {
+            yDistance = -yDistance;
+            yIncrement = -1;
+        }
+        else {
+            yIncrement = 1;
+        }
+        // Determines the direction to increment the x moving from node0 to node1
+        if(xDistance < 0) {
+            xDistance = -xDistance;
+            xIncrement = -1;
+        }
+        else {
+            xIncrement = 1;
+        }
+
+        int xIndex;
+        int yIndex;
+        if(xDistance >= yDistance) {
+            while(xNode0 != xNode1) {
+                f += yDistance;
+                xIndex = xNode0+((xIncrement-1)/2);
+                yIndex = yNode0+((yIncrement-1)/2);
+                if(f >= xDistance) {
+                    // Node checked is node0 unless node1 has either a smaller x index or y index than node0.
+                    if(xIndex >= 0 && yIndex >= 0) {
+                        if(!searchArea.get(yIndex).get(xIndex).walkable()) {
+                            System.out.println("Blocked node: " + searchArea.get(yIndex).get(xIndex).index());
+                            return false;
+                        }
+                    }
+                    else {
+                        System.out.println("1-1: Out of bounds returned false for [" + yIndex + "][" + xIndex + "]");
+                        return false;
+                    }
+                    yNode0 += yIncrement;
+                    f -= xDistance;
+                }
+                xIndex = xNode0+((xIncrement-1)/2);
+                yIndex = yNode0+((yIncrement-1)/2);
+                if(f != 0) {
+                    if(xIndex >= 0 && yIndex >= 0) {
+                        if(!searchArea.get(yIndex).get(xIndex).walkable()) {
+                            System.out.println("Blocked node: " + searchArea.get(yIndex).get(xIndex).index());
+                            return false;
+                        }
+                    }
+                    else {
+                        System.out.println("1-2: Out of bounds returned false for [" + yIndex + "][" + xIndex + "]");
+                        return false;
+                    }
+                }
+                if(yDistance == 0) {
+                    if(!searchArea.get(yNode0).get(xIndex).walkable()) {
+                        if(xIndex > 0 && yNode0 > 1) {
+                            if(!searchArea.get(yNode0 - 1).get(xIndex).walkable()) {
+                                System.out.println("Blocked nodes: " + searchArea.get(yNode0).get(xIndex).index() + ", " + searchArea.get(yNode0 - 1).get(xIndex).index());
+                                return false;
+                            }
+                        }
+                        else {
+                            System.out.println("1-3: Out of bounds returned false for [" + (yNode0-1) + "][" + xIndex + "]");
+                            return false;
+                        }
+                    }
+                }
+                xNode0 += xIncrement;
+            }
+        }
+        else {
+            while(yNode0 != yNode1) {
+                f += xDistance;
+                xIndex = xNode0+((xIncrement-1)/2);
+                yIndex = yNode0+((yIncrement-1)/2);
+                if(f >= yDistance) {
+                    if(xIndex >= 0 && yIndex >= 0) {
+                        if(!searchArea.get(yIndex).get(xIndex).walkable()) {
+                            System.out.println("Blocked node: " + searchArea.get(yIndex).get(xIndex).index());
+                            return false;
+                        }
+                    }
+                    else {
+                        System.out.println("2-1: Out of bounds returned false for [" + yIndex + "][" + xIndex + "]");
+                        return false;
+                    }
+                    xNode0 += xIncrement;
+                    f -= yDistance;
+                }
+                xIndex = xNode0+((xIncrement-1)/2);
+                yIndex = yNode0+((yIncrement-1)/2);
+                if(f != 0) {
+                    if(xIndex >= 0 && yIndex >= 0) {
+                        if(!searchArea.get(yIndex).get(xIndex).walkable()) {
+                            System.out.println("Blocked node: " + searchArea.get(yIndex).get(xIndex).index());
+                            return false;
+                        }
+                    }
+                    else {
+                        System.out.println("2-2: Out of bounds returned false for [" + yIndex + "][" + xIndex + "]");
+                        return false;
+                    }
+                }
+                // Checking just nodes that are between the two nodes in the vertical access
+                if(xDistance == 0) {
+                    if(!searchArea.get(yIndex).get(xNode0).walkable()) {
+                        if(yIndex >= 0 && xNode0 > 0) {
+                            if(!searchArea.get(yIndex).get(xNode0-1).walkable()) {
+                                System.out.println("Blocked nodes: " + searchArea.get(yIndex).get(xNode0).index() + ", " + searchArea.get(yIndex).get(xNode0-1).index());
+                                return false;
+                            }
+                        }
+                        else {
+                            System.out.println("2-3: Out of bounds returned false for [" + yIndex + "][" + (xNode0-1) + "]");
+                            return false;
+                        }
+                    }
+                }
+                yNode0 += yIncrement;
+            }
+        }
+        return true;
+    }
+
     private List<GridNode> reconstructPath(GridNode start, GridNode dest) {
         List<GridNode> path = new ArrayList<GridNode>();
         GridNode node = dest;
@@ -171,6 +305,38 @@ public class ThetaStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
         }
     }
 
+    public void printSearchArea(List<List<GridNode>> searchArea) {
+        for(int i = 0; i < searchArea.size(); i++) {
+            for(int j = 0; j < searchArea.get(0).size(); j++) {
+                if(searchArea.get(i).get(j).walkable()) {
+                    System.out.print('O');
+                }
+                else {
+                    System.out.print('X');
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public void printAllLOSNodeCombinations(List<List<GridNode>> searchArea) {
+        int count = 0;
+        // Go through every line of sight node combination.
+        for(int i = 0; i < searchArea.size(); i++) {
+            for(int j = 0; j < searchArea.get(0).size(); j++) {
+                for(int k = 0; k < searchArea.size(); k++) {
+                    for(int w = 0; w < searchArea.get(0).size(); w++) {
+                        System.out.print(count + ": " + "1st: " + searchArea.get(i).get(j).index() + ", 2nd: " + searchArea.get(k).get(w).index() + " ");
+                        if(lineOfSight(searchArea.get(i).get(j), searchArea.get(k).get(w), searchArea)) {
+                            System.out.println(true);
+                        }
+                        count++;
+                    }
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
         GridNode n0 = new GridNode(0, true);
         GridNode n1 = new GridNode(1, true);
@@ -207,5 +373,8 @@ public class ThetaStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
         ThetaStar thetaStar = new ThetaStar();
         List<GridNode> path = thetaStar.findPath(searchArea, n1, n9);
         thetaStar.printPath(path, searchArea);
+        System.out.println();
+        thetaStar.printSearchArea(searchArea);
+        thetaStar.printAllLOSNodeCombinations(searchArea);
     }
 }
