@@ -182,7 +182,7 @@ public class ThetaStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
                 }
                 if(yDistance == 0) {
                     if(!searchArea.get(yNode0).get(xIndex).walkable()) {
-                        if(xIndex > 0 && yNode0 > 1) {
+                        if(xIndex >= 0 && yNode0 > 0) {
                             if(!searchArea.get(yNode0 - 1).get(xIndex).walkable()) {
                                 System.out.println("Blocked nodes: " + searchArea.get(yNode0).get(xIndex).index() + ", " + searchArea.get(yNode0 - 1).get(xIndex).index());
                                 return false;
