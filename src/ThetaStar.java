@@ -1,97 +1,14 @@
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.lang.Math;
 
 
-public class ThetaStar extends AbstractPathfinder<GridNode, List<List<GridNode>>> {
+public class ThetaStar extends GridAStar {
     /**
      * Class constructor.
      */
     public ThetaStar() {
         
-    }
-    
-    /**
-     * Returns a List representing the path between two nodes in a two-dimensional search space.
-     * @param searchArea the 2D collection of nodes that comprises the
-     *                   traversal area in the form of a List of Lists
-     * @param start      the start node for the path search and must inherit from Node
-     * @param dest       the destination node for the path search and must inherit from Node
-     * @return           the List of nodes in the path starting from the start node and
-     *                   ending with the dest node
-     * @see              java.util.List
-     * @see              java.util.HashSet
-     * @see              java.util.PriorityQueue
-     * @see              #reconstructPath(GridNode, GridNode)
-     * @see              #computeBestPath(GridNode, GridNode, java.util.List)
-     */
-    public List<GridNode> findPath(List<List<GridNode>> searchArea, GridNode start, GridNode dest) {
-        HashSet<GridNode> closedSet = new HashSet<GridNode>();
-        PriorityQueue<GridNode> openQueue = new PriorityQueue<GridNode>();
-        
-        openQueue.add(start);
-        
-        // Run while the open list is not empty (if it is, then the destination was never found)
-        // and while the open list does not contain the destination node (once it has the
-        // destination node the path has been found).
-        while(!openQueue.isEmpty()) {
-            
-            GridNode node = openQueue.remove();
-            
-            // If the destination node has been reached, then return the reconstructed path.
-            if(node == dest) {
-                return reconstructPath(start, node);
-            }
-            
-            closedSet.add(node);
-            
-            // Find neighbors in the 3D array
-            for(int i = -1; i < 2; i++) {
-                for(int j = -1; j < 2; j++) {   
-                    if(i != 0 || j != 0) {
-                        try {
-                            GridNode neighbor =
-                                searchArea.get(node.index()/searchArea.get(0).size() + i).
-                                           get(node.index()%searchArea.get(0).size() + j);
-                             
-                            // If the neighbor can be walked through and has not been visited
-                            // directly, then check to see if the neighbor's values can be updated.
-                            if(!closedSet.contains(neighbor) && neighbor.walkable()) {
-                                // If the neighbor has not been added to the priority queue,
-                                // then set its parent node to null and its G value to "infinity".
-                                if(!openQueue.contains(neighbor)) {
-                                    neighbor.setParent(null);
-                                    neighbor.setG(Double.POSITIVE_INFINITY);
-                                }
-
-                                double oldG = neighbor.g();
-                                // Determine which of the two paths are the best option
-                                computeBestPath(node, neighbor, searchArea);
-                                if(neighbor.g() < oldG) {
-                                    // Set the h value for the neighbor being added to the
-                                    // open queue. NOTE: Do not need to compute h value for
-                                    // every node, just the ones added to the open queue.
-                                    if(neighbor.h() == 0) {
-                                        neighbor.setH(getManhattanDistance(neighbor, dest, searchArea.get(0).size()));
-                                    }
-                                    // If the neighbor is in the open queue, then remove it and
-                                    // add it again, so that it can be sorted in the right place,
-                                    // instead of having to sort the whole queue again.
-                                    if(openQueue.contains(neighbor)) {
-                                        openQueue.remove(neighbor);
-                                    }
-                                    openQueue.add(neighbor);
-                                }
-                            }
-                        } // try
-                        catch (IndexOutOfBoundsException e) {}
-                    } // if(i != 0 || j != 0)
-                } // j
-            } // i            
-        }
-        return null;
     }
 
     /**
@@ -103,12 +20,12 @@ public class ThetaStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
      * @return              void
      * @see                 java.util.List
      * @see                 #lineOfSight(java.util.List, GridNode, GridNode)
-     * @see                 #distanceBetweenNodes(GridNode, GridNode, int)
+     * @see                 #distanceBetweenNodes(GridNode, GridNode)
      */
-    private void computeBestPath(GridNode node, GridNode neighbor, List<List<GridNode>> searchArea) {
+    @Override
+    protected void computeBestPath(GridNode node, GridNode neighbor, List<List<GridNode>> searchArea) {
         if(node.parent() != null && lineOfSight(searchArea, (GridNode)node.parent(), neighbor)) {
-            int parentNeighborDistance = distanceBetweenNodes((GridNode)node.parent(), neighbor,
-                    searchArea.get(0).size());
+            int parentNeighborDistance = distanceBetweenNodes((GridNode)node.parent(), neighbor);
 
             if(node.parent().g() + parentNeighborDistance < neighbor.g()) {
                 neighbor.setParent(node.parent());
@@ -116,58 +33,12 @@ public class ThetaStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
             }
         }
         else {
-            int nodeNeighborDistance = distanceBetweenNodes(node, neighbor, searchArea.get(0).size());
+            int nodeNeighborDistance = distanceBetweenNodes(node, neighbor);
             if(node.g() + nodeNeighborDistance < neighbor.g()) {
                 neighbor.setParent(node);
                 neighbor.setG(node.g() + nodeNeighborDistance);
             }
         }
-    }
-
-    /**
-     * Returns the approximate distance between two nodes in the search area.
-     * @param a                 first node
-     * @param b                 second node
-     * @param searchAreaNumCols the number of columns in the search area used to convert the index
-     *                          held in each node to an x, y coordinate within the grid
-     * @return                  an int representing the approximate distance between the two nodes
-     * @see                     java.lang.Math
-     */
-    private int distanceBetweenNodes(GridNode a, GridNode b, int searchAreaNumCols) {
-        //
-        int xDelta = b.index()%searchAreaNumCols - a.index()%searchAreaNumCols;
-        int yDelta = b.index()/searchAreaNumCols - a.index()/searchAreaNumCols;
-        // Calculate absolute value because distance is always positive.
-        if(xDelta < 0) {
-            xDelta = -xDelta;
-        }
-        if(yDelta < 0) {
-            yDelta = -yDelta;
-        }
-        return (int) (10 * Math.sqrt(xDelta + yDelta));
-    }
-
-    /**
-     * Returns the distance between two nodes using the Manhattan method of adding up the
-     * x distance and the y distance together.
-     * @param a                 first node
-     * @param b                 second node
-     * @param searchAreaNumCols the number of columns in the search area used to convert the index
-     *                          held in each node to an x, y coordinate within the grid
-     * @return                  an int representing the Manhattan distance between the two nodes
-     */
-    private int getManhattanDistance(GridNode a, GridNode b, int searchAreaNumCols) {
-        int xDelta = b.index()%searchAreaNumCols - a.index()%searchAreaNumCols;
-        int yDelta = b.index()/searchAreaNumCols - a.index()/searchAreaNumCols;
-        // Calculate absolute value because distance is always positive.
-        if(xDelta < 0) {
-            xDelta = -xDelta;
-        }
-        if(yDelta < 0) {
-            yDelta = -yDelta;
-        }
-        // Multiply by 10, because adjacent nodes are a distance of 10 apart.
-        return 10 * (xDelta + yDelta);
     }
 
     /**
@@ -181,10 +52,10 @@ public class ThetaStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
      *                      of one another.
      */
     private boolean lineOfSight(List<List<GridNode>> searchArea, GridNode a, GridNode b) {
-        int xA = a.index()%searchArea.get(0).size();
-        int yA = a.index()/searchArea.get(0).size();
-        int xB = b.index()%searchArea.get(0).size();
-        int yB = b.index()/searchArea.get(0).size();
+        int xA = a.x();
+        int yA = a.y();
+        int xB = b.x();
+        int yB = b.y();
 
         int rise = yB - yA;
         int run = xB - xA;
@@ -259,79 +130,24 @@ public class ThetaStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
     }
 
     /**
-     * Reconstructs the path by traversing from the destination node back through each parent
-     * node until the start node is reached.
-     * @param start         the node used as the starting point for the path search
-     * @param dest          the destination node that ends the path search
-     * @return              Returns a List of GridNodes, which are the path with the start node
-     *                      at the head of the List and the dest node at the tail
+     * Returns the approximate distance between two nodes in the search area.
+     * @param a                 first node
+     * @param b                 second node
+     * @return                  an int representing the approximate distance between the two nodes
+     * @see                     java.lang.Math
      */
-    private List<GridNode> reconstructPath(GridNode start, GridNode dest) {
-        List<GridNode> path = new ArrayList<GridNode>();
-        GridNode node = dest;
-        
-        while(true) {
-            path.add(0, node);
-            
-            if(node == start) {
-                break;
-            }
-            
-            node = (GridNode) node.parent();
-        }   
-        return path;
-    }
-
-    public void printPath(List<GridNode> path, List<List<GridNode>> searchArea) {
-        if(path == null) {
-            System.out.println("No path.");
+    @Override
+    protected int distanceBetweenNodes(GridNode a, GridNode b) {
+        int xDelta = b.x() - a.x();
+        int yDelta = b.y() - a.y();
+        // Calculate absolute value because distance is always positive.
+        if(xDelta < 0) {
+            xDelta = -xDelta;
         }
-        else {
-            char[][] printedPath = new char[searchArea.size()][searchArea.get(0).size()];
-            for(int i = 0; i < searchArea.size(); i++) {
-                for(int j = 0; j < searchArea.get(0).size(); j++) {
-                    if(searchArea.get(i).get(j).walkable()) {
-                        printedPath[i][j] = 'O';
-                    }
-                    else {
-                        printedPath[i][j] = 'X';
-                    }
-                }
-            }
-
-            for(int i = 0; i < path.size(); i++) {
-                if(i == 0) {
-                    printedPath[path.get(i).index()/searchArea.get(0).size()][path.get(i).index%searchArea.get(0).size()] = 'S';
-                }
-                else if(i == path.size() - 1) {
-                    printedPath[path.get(i).index()/searchArea.get(0).size()][path.get(i).index%searchArea.get(0).size()] = 'E';
-                }
-                else {
-                    printedPath[path.get(i).index()/searchArea.get(0).size()][path.get(i).index%searchArea.get(0).size()] = 'P';
-                }
-            }
-
-            for(int i = 0; i < printedPath.length; i++) {
-                for (int j = 0; j < printedPath[0].length; j++) {
-                    System.out.print(printedPath[i][j]);
-                }
-                System.out.println();
-            }
+        if(yDelta < 0) {
+            yDelta = -yDelta;
         }
-    }
-
-    public void printSearchArea(List<List<GridNode>> searchArea) {
-        for(int i = 0; i < searchArea.size(); i++) {
-            for(int j = 0; j < searchArea.get(0).size(); j++) {
-                if(searchArea.get(i).get(j).walkable()) {
-                    System.out.print('O');
-                }
-                else {
-                    System.out.print('X');
-                }
-            }
-            System.out.println();
-        }
+        return (int) (10 * Math.sqrt(xDelta + yDelta));
     }
 
     public void printAllLOSNodeCombinations(List<List<GridNode>> searchArea) {
@@ -341,7 +157,10 @@ public class ThetaStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
             for(int j = 0; j < searchArea.get(0).size(); j++) {
                 for(int k = 0; k < searchArea.size(); k++) {
                     for(int w = 0; w < searchArea.get(0).size(); w++) {
-                        System.out.print(count + ": " + "1st: " + searchArea.get(i).get(j).index() + ", 2nd: " + searchArea.get(k).get(w).index() + " ");
+                        System.out.print(count + ": " + "1st: (" + searchArea.get(i).get(j).x() +
+                                ", " + searchArea.get(i).get(j).y() + "), 2nd: (" +
+                                searchArea.get(k).get(w).x() + ", " + searchArea.get(k).get(w).y()
+                                + ") ");
                         System.out.println(lineOfSight(searchArea, searchArea.get(i).get(j), searchArea.get(k).get(w)));
                         count++;
                     }
@@ -358,7 +177,7 @@ public class ThetaStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
 
         for(int i = 0; i < searchArea.size(); i++) {
             for(int j = 0; j < searchArea.get(0).size(); j++) {
-                if(i == node.index()/searchArea.get(0).size() && j == node.index()%searchArea.get(0).size()) {
+                if(i == node.y() && j == node.x()) {
                     visibilityGraph.get(i).add(j, "S");
                 }
                 else if(!searchArea.get(i).get(j).walkable()) {
@@ -377,55 +196,55 @@ public class ThetaStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
     }
 
     public static void main(String[] args) {
-        GridNode n0 = new GridNode(0, true);
-        GridNode n1 = new GridNode(1, true);
-        GridNode n2 = new GridNode(2, true);
-        GridNode n3 = new GridNode(3, true);
-        GridNode n4 = new GridNode(4, false);
-        GridNode n5 = new GridNode(5, false);
-        GridNode n6 = new GridNode(6, false);
-        GridNode n7 = new GridNode(7, true);
-        GridNode n8 = new GridNode(8, true);
-        GridNode n9 = new GridNode(9, true);
-        GridNode n10 = new GridNode(10, false);
-        GridNode n11 = new GridNode(11, true);
-        GridNode n12 = new GridNode(12, true);
-        GridNode n13 = new GridNode(13, true);
-        GridNode n14 = new GridNode(14, true);
-        GridNode n15 = new GridNode(15, true);
-        GridNode n16 = new GridNode(16, true);
-        GridNode n17 = new GridNode(17, true);
-        GridNode n18 = new GridNode(18, true);
-        GridNode n19 = new GridNode(19, false);
-        GridNode n20 = new GridNode(20, false);
-        GridNode n21 = new GridNode(21, false);
-        GridNode n22 = new GridNode(22, false);
-        GridNode n23 = new GridNode(23, true);
-        GridNode n24 = new GridNode(24, true);
-        GridNode n25 = new GridNode(25, true);
-        GridNode n26 = new GridNode(26, false);
-        GridNode n27 = new GridNode(27, true);
-        GridNode n28 = new GridNode(28, true);
-        GridNode n29 = new GridNode(29, true);
-        GridNode n30 = new GridNode(30, true);
-        GridNode n31 = new GridNode(31, true);
-        GridNode n32 = new GridNode(32, true);
-        GridNode n33 = new GridNode(33, true);
-        GridNode n34 = new GridNode(34, true);
-        GridNode n35 = new GridNode(35, false);
-        GridNode n36 = new GridNode(36, false);
-        GridNode n37 = new GridNode(37, false);
-        GridNode n38 = new GridNode(38, false);
-        GridNode n39 = new GridNode(39, true);
-        GridNode n40 = new GridNode(40, true);
-        GridNode n41 = new GridNode(41, true);
-        GridNode n42 = new GridNode(42, false);
-        GridNode n43 = new GridNode(43, true);
-        GridNode n44 = new GridNode(44, true);
-        GridNode n45 = new GridNode(45, true);
-        GridNode n46 = new GridNode(46, true);
-        GridNode n47 = new GridNode(47, true);
-        GridNode n48 = new GridNode(48, true);
+        GridNode n0 = new GridNode(0, 0, 0, true);
+        GridNode n1 = new GridNode(1, 0, 0, true);
+        GridNode n2 = new GridNode(2, 0, 0, true);
+        GridNode n3 = new GridNode(3, 0, 0, true);
+        GridNode n4 = new GridNode(4, 0, 0, false);
+        GridNode n5 = new GridNode(5, 0, 0, false);
+        GridNode n6 = new GridNode(6, 0, 0, false);
+        GridNode n7 = new GridNode(0, 1, 0, true);
+        GridNode n8 = new GridNode(1, 1, 0, true);
+        GridNode n9 = new GridNode(2, 1, 0, true);
+        GridNode n10 = new GridNode(3, 1, 0, false);
+        GridNode n11 = new GridNode(4, 1, 0, true);
+        GridNode n12 = new GridNode(5, 1, 0, true);
+        GridNode n13 = new GridNode(6, 1, 0, true);
+        GridNode n14 = new GridNode(0, 2, 0, true);
+        GridNode n15 = new GridNode(1, 2, 0, true);
+        GridNode n16 = new GridNode(2, 2, 0, true);
+        GridNode n17 = new GridNode(3, 2, 0, true);
+        GridNode n18 = new GridNode(4, 2, 0, true);
+        GridNode n19 = new GridNode(5, 2, 0, false);
+        GridNode n20 = new GridNode(6, 2, 0, false);
+        GridNode n21 = new GridNode(0, 3, 0, false);
+        GridNode n22 = new GridNode(1, 3, 0, false);
+        GridNode n23 = new GridNode(2, 3, 0, true);
+        GridNode n24 = new GridNode(3, 3, 0, true);
+        GridNode n25 = new GridNode(4, 3, 0, true);
+        GridNode n26 = new GridNode(5, 3, 0, false);
+        GridNode n27 = new GridNode(6, 3, 0, true);
+        GridNode n28 = new GridNode(0, 4, 0, true);
+        GridNode n29 = new GridNode(1, 4, 0, true);
+        GridNode n30 = new GridNode(2, 4, 0, true);
+        GridNode n31 = new GridNode(3, 4, 0, true);
+        GridNode n32 = new GridNode(4, 4, 0, true);
+        GridNode n33 = new GridNode(5, 4, 0, true);
+        GridNode n34 = new GridNode(6, 4, 0, true);
+        GridNode n35 = new GridNode(0, 5, 0, false);
+        GridNode n36 = new GridNode(1, 5, 0, false);
+        GridNode n37 = new GridNode(2, 5, 0, false);
+        GridNode n38 = new GridNode(3, 5, 0, false);
+        GridNode n39 = new GridNode(4, 5, 0, true);
+        GridNode n40 = new GridNode(5, 5, 0, true);
+        GridNode n41 = new GridNode(6, 5, 0, true);
+        GridNode n42 = new GridNode(0, 6, 0, false);
+        GridNode n43 = new GridNode(1, 6, 0, true);
+        GridNode n44 = new GridNode(2, 6, 0, true);
+        GridNode n45 = new GridNode(3, 6, 0, true);
+        GridNode n46 = new GridNode(4, 6, 0, true);
+        GridNode n47 = new GridNode(5, 6, 0, true);
+        GridNode n48 = new GridNode(6, 6, 0, true);
         List<GridNode> L0 = new ArrayList<GridNode>(7);
         List<GridNode> L1 = new ArrayList<GridNode>(7);
         List<GridNode> L2 = new ArrayList<GridNode>(7);
@@ -457,6 +276,10 @@ public class ThetaStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
         List<GridNode> path = thetaStar.findPath(searchArea, n13, n7);
 
         thetaStar.printPath(path, searchArea);
+        System.out.println("AStar:");
+        GridAStar aStar = new GridAStar();
+        List<GridNode> pathAStar = aStar.findPath(searchArea, n13, n7);
+        aStar.printPath(pathAStar, searchArea);
 
         System.out.println();
 
