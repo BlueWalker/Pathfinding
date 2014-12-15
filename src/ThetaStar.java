@@ -7,24 +7,22 @@ public class ThetaStar extends GridAStar {
     /**
      * Class constructor.
      */
-    public ThetaStar() {
-        
+    public ThetaStar(List<List<GridNode>> searchArea) {
+        super(searchArea);
     }
 
     /**
      * Determines whether to set a neighbor's parent to the node or to the node's parent.
      * @param node          the current node being visited in the path search
      * @param neighbor      a neighbor of node
-     * @param searchArea    the 2D collection of nodes that comprises the
-     *                      traversal area in the form of a List of Lists
      * @return              void
      * @see                 java.util.List
-     * @see                 #lineOfSight(java.util.List, GridNode, GridNode)
+     * @see                 #lineOfSight(GridNode, GridNode)
      * @see                 #distanceBetweenNodes(GridNode, GridNode)
      */
     @Override
-    protected void computeBestPath(GridNode node, GridNode neighbor, List<List<GridNode>> searchArea) {
-        if(node.parent() != null && lineOfSight(searchArea, (GridNode)node.parent(), neighbor)) {
+    protected void computeBestPath(GridNode node, GridNode neighbor) {
+        if(node.parent() != null && lineOfSight((GridNode)node.parent(), neighbor)) {
             int parentNeighborDistance = distanceBetweenNodes((GridNode)node.parent(), neighbor);
 
             if(node.parent().g() + parentNeighborDistance < neighbor.g()) {
@@ -43,15 +41,13 @@ public class ThetaStar extends GridAStar {
 
     /**
      * Returns true if the two nodes are within line of sight of one another, false otherwise.
-     * @param searchArea    the 2D collection of nodes that comprises the
-     *                      traversal area in the form of a List of Lists
      * @param a             first node
      * @param b             second node
      *
      * @return              Returns a boolean for whether or not the two nodes are in line of sight
      *                      of one another.
      */
-    private boolean lineOfSight(List<List<GridNode>> searchArea, GridNode a, GridNode b) {
+    private boolean lineOfSight(GridNode a, GridNode b) {
         int xA = a.x();
         int yA = a.y();
         int xB = b.x();
@@ -161,7 +157,7 @@ public class ThetaStar extends GridAStar {
                                 ", " + searchArea.get(i).get(j).y() + "), 2nd: (" +
                                 searchArea.get(k).get(w).x() + ", " + searchArea.get(k).get(w).y()
                                 + ") ");
-                        System.out.println(lineOfSight(searchArea, searchArea.get(i).get(j), searchArea.get(k).get(w)));
+                        System.out.println(lineOfSight(searchArea.get(i).get(j), searchArea.get(k).get(w)));
                         count++;
                     }
                 }
@@ -183,7 +179,7 @@ public class ThetaStar extends GridAStar {
                 else if(!searchArea.get(i).get(j).walkable()) {
                     visibilityGraph.get(i).add(j, "X");
                 }
-                else if(lineOfSight(searchArea, node, searchArea.get(i).get(j))) {
+                else if(lineOfSight(node, searchArea.get(i).get(j))) {
                     visibilityGraph.get(i).add(j, "V");
                 }
                 else {
@@ -270,16 +266,16 @@ public class ThetaStar extends GridAStar {
         searchArea.add(L5);
         searchArea.add(L6);
 
-        ThetaStar thetaStar = new ThetaStar();
+        ThetaStar thetaStar = new ThetaStar(searchArea);
         //List<GridNode> path = thetaStar.findPath(searchArea, n13, n43);
         //List<GridNode> path = thetaStar.findPath(searchArea, n19, n43);
-        List<GridNode> path = thetaStar.findPath(searchArea, n13, n7);
+        List<GridNode> path = thetaStar.findPath(n13, n7);
 
-        thetaStar.printPath(path, searchArea);
+        thetaStar.printPath(path);
         System.out.println("AStar:");
-        GridAStar aStar = new GridAStar();
-        List<GridNode> pathAStar = aStar.findPath(searchArea, n13, n7);
-        aStar.printPath(pathAStar, searchArea);
+        GridAStar aStar = new GridAStar(searchArea);
+        List<GridNode> pathAStar = aStar.findPath(n13, n7);
+        aStar.printPath(pathAStar);
 
         System.out.println();
 
@@ -295,7 +291,7 @@ public class ThetaStar extends GridAStar {
 
         //thetaStar.lineOfSight(n13, n7, searchArea);
         //thetaStar.lineOfSight(n13, n25, searchArea);
-        thetaStar.lineOfSight(searchArea, n13, n17);
+        thetaStar.lineOfSight(n13, n17);
         //thetaStar.lineOfSight(searchArea, n20, n43);
 
     }

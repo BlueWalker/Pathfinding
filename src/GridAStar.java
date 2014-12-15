@@ -10,14 +10,12 @@ public class GridAStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
     /**
      * Class constructor.
      */
-    public GridAStar() {
-
+    public GridAStar(List<List<GridNode>> searchArea) {
+        super(searchArea);
     }
 
     /**
      * Returns a List representing the path between two nodes in a two-dimensional search space.
-     * @param searchArea the 2D collection of nodes that comprises the
-     *                   traversal area in the form of a List of Lists
      * @param start      the start node for the path search and must inherit from Node
      * @param dest       the destination node for the path search and must inherit from Node
      * @return           the List of nodes in the path starting from the start node and
@@ -26,9 +24,9 @@ public class GridAStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
      * @see              java.util.HashSet
      * @see              java.util.PriorityQueue
      * @see              #reconstructPath(GridNode, GridNode)
-     * @see              #computeBestPath(GridNode, GridNode, java.util.List)
+     * @see              #computeBestPath(GridNode, GridNode)
      */
-    public List<GridNode> findPath(List<List<GridNode>> searchArea, GridNode start, GridNode dest) {
+    public List<GridNode> findPath(GridNode start, GridNode dest) {
         HashSet<GridNode> closedSet = new HashSet<GridNode>();
         PriorityQueue<GridNode> openQueue = new PriorityQueue<GridNode>();
 
@@ -69,13 +67,13 @@ public class GridAStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
 
                                 double oldG = neighbor.g();
                                 // Determine which of the two paths are the best option
-                                computeBestPath(node, neighbor, searchArea);
+                                computeBestPath(node, neighbor);
                                 if(neighbor.g() < oldG) {
                                     // Set the h value for the neighbor being added to the
                                     // open queue. NOTE: Do not need to compute h value for
                                     // every node, just the ones added to the open queue.
                                     if(neighbor.h() == 0) {
-                                        neighbor.setH(getManhattanDistance(neighbor, dest, searchArea.get(0).size()));
+                                        neighbor.setH(getManhattanDistance(neighbor, dest));
                                     }
                                     // If the neighbor is in the open queue, then remove it and
                                     // add it again, so that it can be sorted in the right place,
@@ -99,13 +97,11 @@ public class GridAStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
      * Determines whether to set a neighbor's parent to the node or to the node's parent.
      * @param node          the current node being visited in the path search
      * @param neighbor      a neighbor of node
-     * @param searchArea    the 2D collection of nodes that comprises the
-     *                      traversal area in the form of a List of Lists
      * @return              void
      * @see                 java.util.List
      * @see                 #distanceBetweenNodes(GridNode, GridNode)
      */
-    protected void computeBestPath(GridNode node, GridNode neighbor, List<List<GridNode>> searchArea) {
+    protected void computeBestPath(GridNode node, GridNode neighbor) {
         int nodeNeighborDistance = distanceBetweenNodes(node, neighbor);
         if(node.g() + nodeNeighborDistance < neighbor.g()) {
             neighbor.setParent(node);
@@ -121,16 +117,6 @@ public class GridAStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
      * @see                     java.lang.Math
      */
     protected int distanceBetweenNodes(GridNode a, GridNode b) {
-        /*int xDelta = b.x() - a.x();
-        int yDelta = b.y() - a.y();
-        // Calculate absolute value because distance is always positive.
-        if(xDelta < 0) {
-            xDelta = -xDelta;
-        }
-        if(yDelta < 0) {
-            yDelta = -yDelta;
-        }
-        return (int) (10 * Math.sqrt(xDelta + yDelta));*/
         if(a.x() != b.x() && a.y() != b.y()) {
             return 14;
         }
@@ -144,11 +130,9 @@ public class GridAStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
      * x distance and the y distance together.
      * @param a                 first node
      * @param b                 second node
-     * @param searchAreaNumCols the number of columns in the search area used to convert the index
-     *                          held in each node to an x, y coordinate within the grid
      * @return                  an int representing the Manhattan distance between the two nodes
      */
-    protected int getManhattanDistance(GridNode a, GridNode b, int searchAreaNumCols) {
+    protected int getManhattanDistance(GridNode a, GridNode b) {
         int xDelta = b.x() - a.x();
         int yDelta = b.y() - a.y();
         // Calculate absolute value because distance is always positive.
@@ -200,7 +184,7 @@ public class GridAStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
         }
     }
 
-    public void printPath(List<GridNode> path, List<List<GridNode>> searchArea) {
+    public void printPath(List<GridNode> path) {
         if(path == null) {
             System.out.println("No path.");
         }
