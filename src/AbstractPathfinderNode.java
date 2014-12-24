@@ -36,18 +36,6 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
         return location;
     }
 
-    public int x() {
-        return location.x;
-    }
-
-    public int y() {
-        return location.y;
-    }
-
-    public int z() {
-        return location.z;
-    }
-
     public AbstractPathfinderNode parent() {
         return parent;
     }

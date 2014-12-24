@@ -2,9 +2,9 @@
  * Created by Josh on 12/14/2014.
  */
 public class RectCoordinates {
-    public int x;
-    public int y;
-    public int z;
+    private int x;
+    private int y;
+    private int z;
 
     /**
      * Class constructor.
@@ -14,4 +14,10 @@ public class RectCoordinates {
         this.y = y;
         this.z = z;
     }
+
+    public int x() { return x; }
+
+    public int y() { return y; }
+
+    public int z() { return z; }
 }
