@@ -1,5 +1,3 @@
-import android.graphics.Rect;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;

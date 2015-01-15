@@ -1,5 +1,3 @@
-import android.graphics.Rect;
-
 import java.util.List;
 
 /**
