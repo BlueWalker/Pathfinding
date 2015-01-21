@@ -1,3 +1,5 @@
+package walker.blue.path.lib;
+
 /**
  * Created by Josh on 12/14/2014.
  */

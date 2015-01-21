@@ -1,3 +1,5 @@
+package walker.blue.path.lib;
+
 import java.util.List;
 
 /**

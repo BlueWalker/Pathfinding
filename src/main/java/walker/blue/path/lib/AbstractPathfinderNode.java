@@ -1,3 +1,4 @@
+package walker.blue.path.lib;
 
 public abstract class AbstractPathfinderNode implements Comparable<AbstractPathfinderNode> {
     /**
