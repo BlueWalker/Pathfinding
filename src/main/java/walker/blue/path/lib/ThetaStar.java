@@ -140,7 +140,7 @@ public class ThetaStar extends GridAStar {
             if(yB < yA) {
                 int temp = yB;
                 yB = yA;
-                yA = yB;
+                yA = temp;
             }
             for(int y = yA; y < yB + 1; y++) {
                 if(!searchArea.get(y).get(xA).walkable()) {
