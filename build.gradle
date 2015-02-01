@@ -104,7 +104,7 @@ if (hasBintrayProperties()) {
             issueTrackerUrl = project.ISSUES_URL
             vcsUrl = project.SCM
             licenses = ['MIT']
-            labels = project.LABELS
+            labels = []
             publicDownloadNumbers = true
             version {
                 name = project.version
