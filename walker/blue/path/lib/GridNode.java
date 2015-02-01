@@ -11,6 +11,10 @@ public class GridNode extends AbstractPathfinderNode {
 
     /**
      * Class constructor.
+     * @param x the column the node is located in the grid
+     * @param y the row the node is located in the grid
+     * @param z the aisle the node is located in the grid
+     * @param walkable determines whether the node can be walked through
      */
     public GridNode(int x, int y, int z, boolean walkable) {
         super(x, y, z);
@@ -19,6 +23,8 @@ public class GridNode extends AbstractPathfinderNode {
 
     /**
      * Class constructor.
+     * @param location the index of the node in the grid
+     * @param walkable determines whether the node can be walked through
      */
     public GridNode(RectCoordinates location, boolean walkable) {
         super(location);

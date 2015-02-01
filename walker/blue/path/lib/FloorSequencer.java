@@ -21,18 +21,43 @@ public class FloorSequencer {
      * Holds the total number of floor connector nodes within the search area.
      */
     private int numConnectorNodes;
+    
+    private double nodeDistance;
+    
+    /**
+     * This assumes that every floor has approximately the same height.
+     */
+    private double floorHeight;
 
     /**
      * Class constructor.
      */
-    public FloorSequencer(GridAStar pathfinder, List<List<List<GridNode>>> searchArea, int numConnectorNodes) {
+    public FloorSequencer(GridAStar pathfinder, List<List<List<GridNode>>> searchArea, double nodeDistance, double floorHeight) {
         this.pathfinder = pathfinder;
         this.searchArea = searchArea;
-        this.numConnectorNodes = numConnectorNodes;
+        this.nodeDistance = nodeDistance;
+        this.floorHeight = floorHeight;
+        
+        for(int i = 0; i < searchArea.size(); i++) {
+            for(int j = 0; j < searchArea.get(i).size(); j++) {
+                for(int k = 0; k < searchArea.get(i).get(j).size(); k++) {
+                    GridNode gridNode = searchArea.get(i).get(j).get(k);
+                    if(gridNode instanceof FloorConnectorNode) {
+                        numConnectorNodes++;
+                    }
+                }
+            }
+        }
     }
 
     public List<GridNode> findPath(GridNode start, GridNode dest) {
         List<GridNode> path = null;
+        
+        // Check if the start and dest node are on the same floor. If so, then simply call the pathfinder's
+        // findPath method to find the path on one floor.
+        if(start.location().z() == dest.location().z()) {
+            return pathfinder.findPath(searchArea.get(start.location().z()), start, dest);
+        }
 
         List<List<GridNode>> floorSequences = findFloorSequences(start.location().z(), dest.location().z());
 
@@ -163,6 +188,45 @@ public class FloorSequencer {
         }
 
         return sequences;
+    }
+    
+    /**
+     * Returns the node closest to the given location. This is best used when each floor has approximately
+     * the same height. If floors have significant differences in height, then use the other overloaded
+     * method getNode(RectCoordinates, int)
+     * @param location the coordinates used to find the node that matches the same approximate location
+     * @return a GridNode that is closest to the location given. If none can be found, null is returned
+     */
+    public GridNode getNode(RectCoordinates location) {
+        int xIndex = (int)(location.y() / nodeDistance);
+        int yIndex = (int)(location.x() / nodeDistance);
+        int zIndex = (int)(location.z() / floorHeight);
+        if(xIndex >= searchArea.get(0).get(0).size() ||
+                yIndex >= searchArea.get(0).size() ||
+                zIndex >= searchArea.size()) {
+            return null;
+        }
+        return searchArea.get(zIndex).get(yIndex).get(xIndex);
+    }
+    
+    /**
+     * Returns the node closest to the given location, but does not use the z value, instead using the 
+     * given floorNumber to decide the z index in the 3D grid. This is best used when the heights of 
+     * floors are very different or if the z value is not completely reliable. 
+     * @param location the coordinates, specifically the x and y coordinates, used to find the node
+     *        that matches the same approximate location
+     * @param floorNumber the value used to index the 3D grid along the z aisle
+     * @return a GridNode that is closest to the location in the x and y of location and the floorNumber in the z direction
+     */
+    public GridNode getNode(RectCoordinates location, int floorNumber) {
+        int xIndex = (int)(location.y() / nodeDistance);
+        int yIndex = (int)(location.x() / nodeDistance);
+        if(xIndex >= searchArea.get(0).get(0).size() ||
+                yIndex >= searchArea.get(0).size() ||
+                floorNumber >= searchArea.size()) {
+            return null;
+        }
+        return searchArea.get(floorNumber).get(yIndex).get(xIndex);
     }
 
     public void printFloorSequences( List<List<GridNode>> floorSequences) {
