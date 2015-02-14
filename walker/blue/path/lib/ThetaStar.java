@@ -479,7 +479,7 @@ public class ThetaStar extends GridAStar {
 
         searchSpace.add(firstFloor); searchSpace.add(secondFloor); searchSpace.add(thirdFloor);
 
-        FloorSequencer floorSequencer = new FloorSequencer(thetaStar, searchSpace, 10, 12);
+        FloorSequencer floorSequencer = new FloorSequencer(thetaStar, searchSpace);
 
         List<GridNode> multiFloorPath = floorSequencer.findPath(node1, node27);
         floorSequencer.printPath(searchSpace, multiFloorPath);
@@ -487,17 +487,6 @@ public class ThetaStar extends GridAStar {
         thetaStar.printPath(searchSpace.get(0), thetaStar.findPath(searchSpace.get(0), node1, node7));
         
         floorSequencer.printPath(searchSpace, floorSequencer.findPath(node1, node8));
-        
-        RectCoordinates location = new RectCoordinates(1, 1, 1);
-        
-        GridNode grabbedNode = floorSequencer.getNode(location);
-        
-        if(grabbedNode == null) {
-            System.out.println("NULL node");
-        }
-        else {
-            System.out.println("x=" + grabbedNode.location().x() + " y=" + grabbedNode.location().y() + " z=" + grabbedNode.location().z());
-        }
         
     }
 }
