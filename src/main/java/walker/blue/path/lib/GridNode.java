@@ -34,4 +34,28 @@ public class GridNode extends AbstractPathfinderNode {
     public boolean walkable() {
         return this.walkable;
     }
+
+    /**
+     * TODO: Should we check other things?
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof GridNode)) {
+            return false;
+        }
+        GridNode other = (GridNode) obj;
+        if (!location.equals(other.location)) {
+            return false;
+        }
+        if (walkable != other.walkable) {
+            return false;
+        }
+        return true;
+    }
 }

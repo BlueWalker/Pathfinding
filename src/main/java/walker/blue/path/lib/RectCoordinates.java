@@ -22,4 +22,28 @@ public class RectCoordinates {
     public int y() { return y; }
 
     public int z() { return z; }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof RectCoordinates)) {
+            return false;
+        }
+        RectCoordinates other = (RectCoordinates) obj;
+        if (x != other.x) {
+            return false;
+        }
+        if (y != other.y) {
+            return false;
+        }
+        if (z != other.z) {
+            return false;
+        }
+        return true;
+    }
 }
