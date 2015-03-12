@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import walker.blue.path.lib.GridGenerator;
 import walker.blue.path.lib.GridNode;
 
 /**
@@ -16,13 +17,13 @@ public class GridGeneratorTest {
     @Test
     public void testGridGenerate() {
         List<List<GridNode>> expectedGrid = setup2DExpectedNode();
-        boolean[][] bools = {{true, false, true, false, true, false},
-                {false, false, false, false, false, false},
-                {true, true, true, true, true, true},
-                {false, false, false, true, true, true},
-                {true, true, true, false, false, false},
-                {true, true, false, false, true, true}};
-        List<List<GridNode>> grid = GridGenerator.gen2D(bools);
+        char[][] charGrid = {{'O', 'X', 'O', 'X', 'O', 'X'},
+                {'X', 'X', 'X', 'X', 'X', 'X'},
+                {'O', 'O', 'O', 'O', 'O', 'O'},
+                {'X', 'X', 'X', 'O', 'O', 'O'},
+                {'O', 'O', 'O', 'X', 'X', 'X'},
+                {'O', 'O', 'X', 'X', 'O', 'O'}};
+        List<List<GridNode>> grid = GridGenerator.gen2D(charGrid);
         Assert.assertEquals(expectedGrid, grid);
     }
 
