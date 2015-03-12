@@ -7,8 +7,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import walker.blue.path.lib.util.GridGenerator;
-
 /**
  * Unit tests for ThetaStar class
  */
@@ -23,14 +21,14 @@ public class ThetaStarTest {
 
     @Test
     public void testFindPath2D() {
-        boolean[][] searchAreaBools = {{true, true, true, true, false, false, false},
-                {true, true, true, false, true, true, true},
-                {true, true, true, true, true, false, false},
-                {false, false, true, true, true, false, true},
-                {true, true, true, true, true, true, true},
-                {false, false, false, false, true, true, true},
-                {false, true, true, true, true, true, true}};
-        List<List<GridNode>> searchArea = GridGenerator.gen2D(searchAreaBools);
+        char[][] searchAreaGrid = {{'O', 'O', 'O', 'O', 'X', 'X', 'X'},
+                {'O', 'O', 'O', 'X', 'O', 'O', 'O'},
+                {'O', 'O', 'O', 'O', 'O', 'X', 'X'},
+                {'X', 'X', 'O', 'O', 'O', 'X', 'O'},
+                {'O', 'O', 'O', 'O', 'O', 'O', 'O'},
+                {'X', 'X', 'X', 'X', 'O', 'O', 'O'},
+                {'X', 'O', 'O', 'O', 'O', 'O', 'O'}};
+        List<List<GridNode>> searchArea = GridGenerator.gen2D(searchAreaGrid);
         GridNode startNode = searchArea.get(2).get(5);
         GridNode endNode = searchArea.get(6).get(1);
         List<GridNode> expectedPath = new ArrayList<>();
