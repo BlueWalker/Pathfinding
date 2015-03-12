@@ -58,4 +58,10 @@ public class GridNode extends AbstractPathfinderNode {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "\n" +
+                "Walkable: " + this.walkable();
+    }
 }

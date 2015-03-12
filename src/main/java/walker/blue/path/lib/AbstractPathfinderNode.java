@@ -101,5 +101,9 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
         }
     }
 
+    @Override
+    public String toString() {
+        return location.toString();
+    }
 }
 

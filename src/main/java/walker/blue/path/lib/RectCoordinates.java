@@ -46,4 +46,9 @@ public class RectCoordinates {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "X: " + this.x + ", Y: " + this.y + ", Z: " + this.z;
+    }
 }
