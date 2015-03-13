@@ -3,8 +3,6 @@ package walker.blue.path.lib;
 import java.util.ArrayList;
 import java.util.List;
 
-import walker.blue.path.lib.GridNode;
-
 /**
  * Util Class which generates a grid which can be used in testing
  */
@@ -16,7 +14,7 @@ public class GridGenerator {
     private GridGenerator() {}
 
     /**
-     * Generates a 2D grid using the values in the boolean array
+     * Generates a 2D grid using the values in the char array
      *
      * @param grid char values indicating the type of grid node
      * @return generated grid
@@ -24,8 +22,10 @@ public class GridGenerator {
     public static List<List<GridNode>> gen2D(final char[][] grid) {
         return gen2D(grid, 0);
     }
+
     /**
-     * Generates a 2D grid using the values in the boolean array
+     * Generates a 2D grid using the values in the char array and
+     * assigns the z coordinate of every node to the given floor number.
      *
      * @param grid char values indicating the type of grid node
      * @param floor the floor number of the 2D grid
@@ -46,10 +46,24 @@ public class GridGenerator {
                         currentXRow.add(new GridNode(x, y, floor, false));
                         break;
                     case 'E':
-                        currentXRow.add(new FloorConnector(x, y, floor, false, FloorConnector.Type.ELEVATOR));
+                        currentXRow.add(new FloorConnector(x,
+                                y,
+                                floor,
+                                false,
+                                FloorConnector.Type.ELEVATOR)
+                        );
                         break;
                     case 'S':
-                        currentXRow.add(new FloorConnector(x, y, floor, false, FloorConnector.Type.STAIRS));
+                        currentXRow.add(new FloorConnector(x,
+                                y,
+                                floor,
+                                false,
+                                FloorConnector.Type.STAIRS)
+                        );
+                        break;
+                    default:
+                        // Unknown node type, create untraversable node
+                        currentXRow.add(new GridNode(x, y, floor, false));
                         break;
                 }
                 x++;
@@ -61,7 +75,9 @@ public class GridGenerator {
     }
 
     /**
-     *
+     * Generates a 3D grid using the values in the char array.
+     * @param grid3D char values indicating the type of grid node to generate.
+     * @return generated grid
      */
     public static List<List<List<GridNode>>> gen3D(final char[][][] grid3D) {
         final List<List<List<GridNode>>> generatedGrid3D = new ArrayList<>();

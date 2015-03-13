@@ -1,18 +1,26 @@
 package walker.blue.path.lib;
 
+/**
+ * This abstract class holds basic node information needed to find a
+ * path between two nodes in a group of nodes.
+ */
 public abstract class AbstractPathfinderNode implements Comparable<AbstractPathfinderNode> {
+
     /**
      * Used to give an x, y, and z position of the node in 3D space.
      */
     protected RectCoordinates location;
+
     /**
      * Holds the parent node that will help with following the path
      */
     protected AbstractPathfinderNode parent;
+
     /**
      * Distance from the starting node to this node following the current path
      */
     protected double g;
+
     /**
      * Estimated distance from this node to the destination node
      */
@@ -25,7 +33,7 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
      * @param z the aisle the node is located in the grid
      */
     public AbstractPathfinderNode(int x, int y, int z) {
-        location = new RectCoordinates(x, y, z);
+        this.location = new RectCoordinates(x, y, z);
         this.g = 0.0;
         this.h = 0.0;
     }
@@ -44,20 +52,24 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
      * Returns the location of the node in the grid
      * @return the location of the node in the grid
      */
-    public RectCoordinates location() {
-        return location;
+    public RectCoordinates getLocation() {
+        return this.location;
     }
 
     /**
      * Gets the parent node of this node
      * @return the parent node of this node as an AbstractPathfinderNode
      */
-    public AbstractPathfinderNode parent() {
-        return parent;
+    public AbstractPathfinderNode getParent() {
+        return this.parent;
     }
 
-    public void setParent(AbstractPathfinderNode par) {
-        parent = par;
+    /**
+     * Sets the parent of this node. Used when calculating a path.
+     * @param parent new parent
+     */
+    public void setParent(AbstractPathfinderNode parent) {
+        this.parent = parent;
     }
 
     /**
@@ -65,12 +77,16 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
      * search taking the current path that reaches this node.
      * @return the distance between the start node and this node
      */
-    public double g() {
-        return g;
+    public double getG() {
+        return this.g;
     }
 
+    /**
+     * Sets the g value for this node. Used when calculating a path.
+     * @param val
+     */
     public void setG(double val) {
-        g = val;
+        this.g = val;
     }
 
     /**
@@ -78,14 +94,28 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
      * node in the path search.
      * @return the approximate distance from this node to the destination
      */
-    public double h() {
-        return h;
+    public double getH() {
+        return this.h;
     }
 
+    /**
+     * Sets the h value for this node. Used when calculating a path.
+     * @param val
+     */
     public void setH(double val) {
-        h = val;
+        this.h = val;
     }
 
+    /**
+     * Calculates the f values of both nodes, which is just the addition
+     * of the g and h values, to determine whether the other node
+     * is farther or closer to the destination while following the current
+     * path.
+     * @param another the other AbstractPathfinderNode being compared to this one
+     * @return  -1 if this node has a smaller f value,
+     *          0 if both nodes have the same f value,
+     *          1 if this node has a greater f value
+     */
     @Override
     public int compareTo(AbstractPathfinderNode another) {
         double f = this.h + this.g;
@@ -101,9 +131,13 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
         }
     }
 
+    /**
+     * Returns a formatted String holding the location of the node.
+     * @return String
+     */
     @Override
     public String toString() {
-        return location.toString();
+        return this.location.toString();
     }
 }
 

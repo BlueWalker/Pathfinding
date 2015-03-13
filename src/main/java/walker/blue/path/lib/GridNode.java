@@ -1,38 +1,45 @@
 package walker.blue.path.lib;
 
 /**
- * Created by Josh on 12/14/2014.
+ * This class subclasses AbstractPathfinderNode and inludes the
+ * rest of the information needed to perform path planning using
+ * a grid as the structure for describing the search area.
  */
 public class GridNode extends AbstractPathfinderNode {
-    /**
-     * Holds the state of the node, whether its a wall or a walkable area
-     */
-    protected boolean walkable;
 
     /**
-     * Class constructor.
+     * Holds the state of whether the node is an obstruction or walkable area
+     */
+    protected boolean traversable;
+
+    /**
+     * Class constructor taking in x, y, and z coordinates to set the location.
      * @param x the column the node is located in the grid
      * @param y the row the node is located in the grid
      * @param z the aisle the node is located in the grid
-     * @param walkable determines whether the node can be walked through
+     * @param traversable determines whether the node can be traversed through
      */
-    public GridNode(int x, int y, int z, boolean walkable) {
+    public GridNode(int x, int y, int z, boolean traversable) {
         super(x, y, z);
-        this.walkable = walkable;
+        this.traversable = traversable;
     }
 
     /**
-     * Class constructor.
+     * Class constructor taking in a RectCoordinates object to set the location.
      * @param location the index of the node in the grid
-     * @param walkable determines whether the node can be walked through
+     * @param traversable determines whether the node can be traversed through
      */
-    public GridNode(RectCoordinates location, boolean walkable) {
+    public GridNode(RectCoordinates location, boolean traversable) {
         super(location);
-        this.walkable = walkable;
+        this.traversable = traversable;
     }
 
-    public boolean walkable() {
-        return this.walkable;
+    /**
+     * Access method to determine if the node is traversable or not.
+     * @return
+     */
+    public boolean isTraversable() {
+        return this.traversable;
     }
 
     /**
@@ -53,15 +60,19 @@ public class GridNode extends AbstractPathfinderNode {
         if (!location.equals(other.location)) {
             return false;
         }
-        if (walkable != other.walkable) {
+        if (traversable != other.traversable) {
             return false;
         }
         return true;
     }
 
+    /**
+     * Returns a easy-to-view formatted string that describes the object.
+     * @return String
+     */
     @Override
     public String toString() {
         return super.toString() + "\n" +
-                "Walkable: " + this.walkable();
+                "Traversable: " + this.traversable;
     }
 }

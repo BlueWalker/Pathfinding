@@ -1,15 +1,31 @@
 package walker.blue.path.lib;
 
 /**
- * Created by Josh on 12/14/2014.
+ * This class provides a simple way to group 3D rectangular coordinates
+ * together as int primitives.
  */
 public class RectCoordinates {
+
+    /**
+     * Holds the x-coordinate
+     */
     private int x;
+
+    /**
+     * Holds the y-coordinate
+     */
     private int y;
+
+    /**
+     * Holds the z-coordinate
+     */
     private int z;
 
     /**
-     * Class constructor.
+     * Class constructor accepting x, y, and z coordinates.
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param z the z coordinate
      */
     public RectCoordinates(int x, int y, int z) {
         this.x = x;
@@ -17,12 +33,35 @@ public class RectCoordinates {
         this.z = z;
     }
 
-    public int x() { return x; }
+    /**
+     * Access method for the x-coordinate.
+     * @return int
+     */
+    public int getX() {
+        return x;
+    }
 
-    public int y() { return y; }
+    /**
+     * Access method for the y-coordinate.
+     * @return int
+     */
+    public int getY() {
+        return y;
+    }
 
-    public int z() { return z; }
+    /**
+     * Access method for the z-coordinate
+     * @return int
+     */
+    public int getZ() {
+        return z;
+    }
 
+    /**
+     * Overrides the equals checking if the x, y, and z coordinates are equal.
+     * @param obj the other object
+     * @return boolean
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -47,6 +86,10 @@ public class RectCoordinates {
         return true;
     }
 
+    /**
+     * Gives the x, y, and z coordinates in String form.
+     * @return String
+     */
     @Override
     public String toString() {
         return "X: " + this.x + ", Y: " + this.y + ", Z: " + this.z;
