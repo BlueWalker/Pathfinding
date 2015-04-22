@@ -1,4 +1,6 @@
-package walker.blue.path.lib;
+package walker.blue.path.lib.node;
+
+import walker.blue.path.lib.node.RectCoordinates;
 
 /**
  * This class can be used to convert between the grid coordinate system
@@ -29,6 +31,7 @@ public class NodeMapper {
     /**
      * Constructor that accepts the node distance of the grid and
      * the floor height of the grid.
+     *
      * @param nodeDistance distance between adjacent nodes along horizontal axes
      * @param floorHeight distance between adjacent nodes along vertical axis
      */
@@ -40,6 +43,7 @@ public class NodeMapper {
     /**
      * Gets the index of the grid according to the given real world
      * rectangular coordinates.
+     *
      * @param realLoc real world coordinates
      * @return
      */
@@ -54,6 +58,7 @@ public class NodeMapper {
     /**
      * Gets the real world coordinates from the given grid index location
      * by using the node distance and floor height member variables.
+     *
      * @param gridLocation specific indices within the grid
      * @return RectCoordinates
      */
@@ -67,6 +72,7 @@ public class NodeMapper {
 
     /**
      * Access method to get the node distance.
+     *
      * @return double
      */
     public double getNodeDistance() {
@@ -75,6 +81,7 @@ public class NodeMapper {
 
     /**
      * Access method to get the floor height.
+     *
      * @return double
      */
     public double getFloorHeight() {

@@ -1,9 +1,12 @@
-package walker.blue.path.lib;
+package walker.blue.path.lib.floor;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
+
+import walker.blue.path.lib.finder.GridAStar;
+import walker.blue.path.lib.node.GridNode;
 
 /**
  * This class sequences together 2D paths generated from a GridAStar
@@ -50,6 +53,7 @@ public class FloorSequencer {
      * Technically, a longer path could be calculated quicker than a shorter path if
      * when the shorter path was being calculated, the CPU had a greater load from
      * external applications outside of the navigation system.
+     *
      * @param start the start node
      * @param dest the end node
      * @return the path from the start to dest nodes as a List of GridNodes
@@ -119,6 +123,7 @@ public class FloorSequencer {
      * how an adjacency list is traversed) to find every possible way in
      * the floor connector nodes an be followed to go from the start floor
      * to the destination floor.
+     *
      * @param startFloor the start floor
      * @param destFloor the end floor
      * @return a list of every sequence of floor connectors that can
@@ -200,6 +205,7 @@ public class FloorSequencer {
 
     /**
      * Prints the given floor sequences in an easy-to-view format.
+     *
      * @param floorSequences list of node sequences
      */
     public void printFloorSequences( List<List<GridNode>> floorSequences) {
@@ -222,6 +228,7 @@ public class FloorSequencer {
     /**
      * Prints the given path over top of the given 3D search area in an
      * easy-to-view format.
+     *
      * @param searchArea the 3D list of nodes representing the building layout
      * @param path the list of nodes that make up the path
      */

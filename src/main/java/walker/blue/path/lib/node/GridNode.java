@@ -1,4 +1,6 @@
-package walker.blue.path.lib;
+package walker.blue.path.lib.node;
+
+import walker.blue.path.lib.base.AbstractPathfinderNode;
 
 /**
  * This class subclasses AbstractPathfinderNode and inludes the
@@ -14,6 +16,7 @@ public class GridNode extends AbstractPathfinderNode {
 
     /**
      * Class constructor taking in x, y, and z coordinates to set the location.
+     *
      * @param x the column the node is located in the grid
      * @param y the row the node is located in the grid
      * @param z the aisle the node is located in the grid
@@ -26,6 +29,7 @@ public class GridNode extends AbstractPathfinderNode {
 
     /**
      * Class constructor taking in a RectCoordinates object to set the location.
+     *
      * @param location the index of the node in the grid
      * @param traversable determines whether the node can be traversed through
      */
@@ -36,6 +40,7 @@ public class GridNode extends AbstractPathfinderNode {
 
     /**
      * Access method to determine if the node is traversable or not.
+     *
      * @return
      */
     public boolean isTraversable() {
@@ -66,10 +71,6 @@ public class GridNode extends AbstractPathfinderNode {
         return true;
     }
 
-    /**
-     * Returns a easy-to-view formatted string that describes the object.
-     * @return String
-     */
     @Override
     public String toString() {
         return super.toString() + "\n" +

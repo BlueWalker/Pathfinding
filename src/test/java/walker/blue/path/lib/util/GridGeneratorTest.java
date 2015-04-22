@@ -6,8 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import walker.blue.path.lib.GridGenerator;
-import walker.blue.path.lib.GridNode;
+import walker.blue.path.lib.node.GridNode;
 
 /**
  * Unit tests for GridGenerator class

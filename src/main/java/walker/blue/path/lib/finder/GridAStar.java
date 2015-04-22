@@ -1,9 +1,12 @@
-package walker.blue.path.lib;
+package walker.blue.path.lib.finder;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
+
+import walker.blue.path.lib.base.AbstractPathfinder;
+import walker.blue.path.lib.node.GridNode;
 
 /**
  * This class can be used to find a path between two nodes in a given
@@ -12,13 +15,8 @@ import java.util.PriorityQueue;
 public class GridAStar extends AbstractPathfinder<GridNode, List<List<GridNode>>> {
 
     /**
-     * Class constructor.
-     */
-    public GridAStar() {
-    }
-
-    /**
      * Returns a List representing the path between two nodes in a two-dimensional search space.
+     *
      * @param searchArea a 2D list holding all of the GridNodes that describe the space
      * @param start      the start node for the path search and must inherit from Node
      * @param dest       the destination node for the path search and must inherit from Node
@@ -92,6 +90,7 @@ public class GridAStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
 
     /**
      * Determines whether to set a neighbor's parent to the node or to the node's parent.
+     *
      * @param node          the current node being visited in the path search
      * @param neighbor      a neighbor of node
      * @return              void
@@ -106,6 +105,7 @@ public class GridAStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
 
     /**
      * Returns the approximate distance between two nodes in the search area.
+     *
      * @param a                 first node
      * @param b                 second node
      * @return                  an int representing the approximate distance between the two nodes
@@ -123,6 +123,7 @@ public class GridAStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
     /**
      * Returns the distance between two nodes using the Manhattan method of adding up the
      * x distance and the y distance together.
+     *
      * @param a                 first node
      * @param b                 second node
      * @return                  an int representing the Manhattan distance between the two nodes
@@ -144,6 +145,7 @@ public class GridAStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
     /**
      * Reconstructs the path by traversing from the destination node back through each parent
      * node until the start node is reached.
+     *
      * @param start         the node used as the starting point for the path search
      * @param dest          the destination node that ends the path search
      * @return              Returns a List of GridNodes, which are the path with the start node
@@ -167,6 +169,7 @@ public class GridAStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
 
     /**
      * Prints the given search area in an easy-to-view format.
+     *
      * @param searchArea a 2D list holding all of the GridNodes that describe the space
      */
     public void printSearchArea(List<List<GridNode>> searchArea) {
@@ -185,6 +188,7 @@ public class GridAStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
 
     /**
      * Prints the search area along with the given path in an easy-to-view format.
+     *
      * @param searchArea a 2D list holding all of the GridNodes that describe the space
      * @param path the path that is printed over the search area
      */

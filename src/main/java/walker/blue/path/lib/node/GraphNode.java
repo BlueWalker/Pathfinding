@@ -1,4 +1,6 @@
-package walker.blue.path.lib;
+package walker.blue.path.lib.node;
+
+import walker.blue.path.lib.base.AbstractPathfinderNode;
 
 /**
  * This class holds the remaining necessary node information for
@@ -6,6 +8,10 @@ package walker.blue.path.lib;
  * rely on a grid layout search space (i.e. adjacency list, etc.)
  */
 public class GraphNode extends AbstractPathfinderNode {
+
+    /**
+     * Index of the node
+     */
     protected int index;
 
     /**
@@ -28,6 +34,7 @@ public class GraphNode extends AbstractPathfinderNode {
 
     /**
      * Access method to retrieve the node's index.
+     *
      * @return int
      */
     public int getIndex() {

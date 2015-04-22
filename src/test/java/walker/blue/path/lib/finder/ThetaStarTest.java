@@ -1,4 +1,4 @@
-package walker.blue.path.lib;
+package walker.blue.path.lib.finder;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import walker.blue.path.lib.node.GridNode;
+import walker.blue.path.lib.util.GridGenerator;
 
 /**
  * Unit tests for ThetaStar class
@@ -21,7 +24,8 @@ public class ThetaStarTest {
 
     @Test
     public void testFindPath2D() {
-        char[][] searchAreaGrid = {{'O', 'O', 'O', 'O', 'X', 'X', 'X'},
+        char[][] searchAreaGrid = {
+                {'O', 'O', 'O', 'O', 'X', 'X', 'X'},
                 {'O', 'O', 'O', 'X', 'O', 'O', 'O'},
                 {'O', 'O', 'O', 'O', 'O', 'X', 'X'},
                 {'X', 'X', 'O', 'O', 'O', 'X', 'O'},

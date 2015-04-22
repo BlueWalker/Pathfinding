@@ -1,10 +1,12 @@
-package walker.blue.path.lib;
+package walker.blue.path.lib.finder;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.lang.Math;
 import java.util.PriorityQueue;
+
+import walker.blue.path.lib.node.GridNode;
 
 /**
  * This class expands upon GridAStar by providing a means for generating
@@ -18,14 +20,8 @@ import java.util.PriorityQueue;
 public class ThetaStar extends GridAStar {
 
     /**
-     * Class constructor.
-     */
-    public ThetaStar() {
-
-    }
-
-    /**
      * Returns a List representing the path between two nodes in a two-dimensional search space.
+     *
      * @param searchArea a 2D list holding all of the GridNodes that describe the space
      * @param start      the start node for the path search and must inherit from Node
      * @param dest       the destination node for the path search and must inherit from Node
@@ -99,6 +95,7 @@ public class ThetaStar extends GridAStar {
 
     /**
      * Determines whether to set a neighbor's parent to the node or to the node's parent.
+     *
      * @param searchArea    a 2D list holding all of the GridNodes that describe the space
      * @param node          the current node being visited in the path search
      * @param neighbor      a neighbor of node
@@ -126,6 +123,7 @@ public class ThetaStar extends GridAStar {
 
     /**
      * Returns true if the two nodes are within line of sight of one another, false otherwise.
+     *
      * @param searchArea    a 2D list holding all of the GridNodes that describe the space
      * @param a             first node
      * @param b             second node
@@ -213,6 +211,7 @@ public class ThetaStar extends GridAStar {
 
     /**
      * Returns the approximate distance between two nodes in the search area.
+     *
      * @param a                 first node
      * @param b                 second node
      * @return                  an int representing the approximate distance between the two nodes
@@ -234,6 +233,7 @@ public class ThetaStar extends GridAStar {
     /**
      * Calculates the line of sight for every node to every other node and prints
      * out the results.
+     *
      * @param searchArea a 2D list holding all of the GridNodes that describe the space
      */
     public void printAllLOSNodeCombinations(List<List<GridNode>> searchArea) {
@@ -267,6 +267,7 @@ public class ThetaStar extends GridAStar {
 
     /**
      * Checks if every node in the search area is within line of sight with the given node.
+     *
      * @param searchArea    a 2D list holding all of the GridNodes that describe the space
      * @param node          the node used to
      * @return List<List<String>> a 2D list of strings where "S" represents the given node,

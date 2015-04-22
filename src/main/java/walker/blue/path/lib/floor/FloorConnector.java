@@ -1,8 +1,10 @@
-package walker.blue.path.lib;
+package walker.blue.path.lib.floor;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import walker.blue.path.lib.node.GridNode;
 
 /**
  * This class inherits from GridNode and holds extra information
@@ -40,6 +42,7 @@ public class FloorConnector extends GridNode {
      * Constructor taking in individual x, y, and z coordinates as well as
      * a traversable boolean.
      * as the
+     *
      * @param x the x coordinate of the node
      * @param y the y coordinate of the node
      * @param z the z coordinate of the node
@@ -51,6 +54,7 @@ public class FloorConnector extends GridNode {
 
     /**
      * Constructor uniquely accepting a floor connector type.
+     *
      * @param x the x coordinate of the node
      * @param y the y coordinate of the node
      * @param z the z coordinate of the node
@@ -63,6 +67,7 @@ public class FloorConnector extends GridNode {
 
     /**
      * Constructor uniquely accepting the connections for the floor connector.
+     *
      * @param x the x coordinate of the node
      * @param y the y coordinate of the node
      * @param z the z coordinate of the node
@@ -76,6 +81,7 @@ public class FloorConnector extends GridNode {
     /**
      * Constructor uniquely accepting both the type and connectiong for
      * the floor connector.
+     *
      * @param x the x coordinate of the node
      * @param y the y coordinate of the node
      * @param z the z coordinate of the node
@@ -96,6 +102,7 @@ public class FloorConnector extends GridNode {
 
     /**
      * Access method to get the index.
+     *
      * @return index
      */
     public int getIndex() {
@@ -104,6 +111,7 @@ public class FloorConnector extends GridNode {
 
     /**
      * Sets the index for the floor connector
+     *
      * @param index value to set the index member
      */
     public void setIndex(int index) {
@@ -112,6 +120,7 @@ public class FloorConnector extends GridNode {
 
     /**
      * Access method to get the type.
+     *
      * @return type
      */
     public Type getType() {
@@ -120,6 +129,7 @@ public class FloorConnector extends GridNode {
 
     /**
      * Sets the type for the floor connector
+     *
      * @param type value to set the type member
      */
     public void setType(Type type) {
@@ -128,6 +138,7 @@ public class FloorConnector extends GridNode {
 
     /**
      * Returns the type of the floor connector as a String.
+     *
      * @return floor connector type as a String
      */
     public String getTypeString() {
@@ -145,6 +156,7 @@ public class FloorConnector extends GridNode {
 
     /**
      * Access method to get the connections of the floor connector.
+     *
      * @return a list of connected FloorConnectors
      */
     public List<FloorConnector> getConnections() {
@@ -153,6 +165,7 @@ public class FloorConnector extends GridNode {
 
     /**
      * Adds a connection to the current connections list.
+     *
      * @param connection FloorConnector to be added to the current connections
      * @return true on success, false otherwise
      */
@@ -162,6 +175,7 @@ public class FloorConnector extends GridNode {
 
     /**
      * Adds a collection of FloorConnectors to the current connections list.
+     *
      * @param c the collection of FloorConnectors to be added
      * @return true on success, false otherwise
      */
@@ -171,6 +185,7 @@ public class FloorConnector extends GridNode {
 
     /**
      * Uses the super class's equals method to determine equality.
+     *
      * @param o the other object
      * @return true if equal, false otherwise
      */
@@ -183,10 +198,6 @@ public class FloorConnector extends GridNode {
         return true;
     }
 
-    /**
-     * Generated hashcode method
-     * @return int
-     */
     @Override
     public int hashCode() {
         int result = index;
@@ -195,10 +206,6 @@ public class FloorConnector extends GridNode {
         return result;
     }
 
-    /**
-     * Formatted string describing the floor connector.
-     * @return String
-     */
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();

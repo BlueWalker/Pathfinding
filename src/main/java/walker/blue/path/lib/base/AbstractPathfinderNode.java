@@ -1,4 +1,6 @@
-package walker.blue.path.lib;
+package walker.blue.path.lib.base;
+
+import walker.blue.path.lib.node.RectCoordinates;
 
 /**
  * This abstract class holds basic node information needed to find a
@@ -28,6 +30,7 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
 
     /**
      * Class constructor
+     *
      * @param x the column the node is located in the grid
      * @param y the row the node is located in the grid
      * @param z the aisle the node is located in the grid
@@ -40,6 +43,7 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
 
     /**
      * Class constructor taking in pre-made RectCoordinates location.
+     *
      * @param location the index of the node in the grid
      */
     public AbstractPathfinderNode(RectCoordinates location) {
@@ -50,6 +54,7 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
 
     /**
      * Returns the location of the node in the grid
+     *
      * @return the location of the node in the grid
      */
     public RectCoordinates getLocation() {
@@ -58,6 +63,7 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
 
     /**
      * Gets the parent node of this node
+     *
      * @return the parent node of this node as an AbstractPathfinderNode
      */
     public AbstractPathfinderNode getParent() {
@@ -66,6 +72,7 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
 
     /**
      * Sets the parent of this node. Used when calculating a path.
+     *
      * @param parent new parent
      */
     public void setParent(AbstractPathfinderNode parent) {
@@ -75,6 +82,7 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
     /**
      * Returns the distance from the node to the start node in the path
      * search taking the current path that reaches this node.
+     *
      * @return the distance between the start node and this node
      */
     public double getG() {
@@ -83,6 +91,7 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
 
     /**
      * Sets the g value for this node. Used when calculating a path.
+     *
      * @param val
      */
     public void setG(double val) {
@@ -92,6 +101,7 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
     /**
      * Returns the approximate distance from this node to the destination
      * node in the path search.
+     *
      * @return the approximate distance from this node to the destination
      */
     public double getH() {
@@ -100,6 +110,7 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
 
     /**
      * Sets the h value for this node. Used when calculating a path.
+     *
      * @param val
      */
     public void setH(double val) {
@@ -111,6 +122,7 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
      * of the g and h values, to determine whether the other node
      * is farther or closer to the destination while following the current
      * path.
+     *
      * @param another the other AbstractPathfinderNode being compared to this one
      * @return  -1 if this node has a smaller f value,
      *          0 if both nodes have the same f value,
@@ -133,6 +145,7 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
 
     /**
      * Returns a formatted String holding the location of the node.
+     *
      * @return String
      */
     @Override

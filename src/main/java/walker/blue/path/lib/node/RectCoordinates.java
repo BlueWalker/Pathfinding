@@ -1,4 +1,4 @@
-package walker.blue.path.lib;
+package walker.blue.path.lib.node;
 
 /**
  * This class provides a simple way to group 3D rectangular coordinates
@@ -23,6 +23,7 @@ public class RectCoordinates {
 
     /**
      * Class constructor accepting x, y, and z coordinates.
+     *
      * @param x the x coordinate
      * @param y the y coordinate
      * @param z the z coordinate
@@ -35,6 +36,7 @@ public class RectCoordinates {
 
     /**
      * Access method for the x-coordinate.
+     *
      * @return int
      */
     public int getX() {
@@ -43,6 +45,7 @@ public class RectCoordinates {
 
     /**
      * Access method for the y-coordinate.
+     *
      * @return int
      */
     public int getY() {
@@ -51,6 +54,7 @@ public class RectCoordinates {
 
     /**
      * Access method for the z-coordinate
+     *
      * @return int
      */
     public int getZ() {
@@ -59,6 +63,7 @@ public class RectCoordinates {
 
     /**
      * Overrides the equals checking if the x, y, and z coordinates are equal.
+     *
      * @param obj the other object
      * @return boolean
      */
@@ -88,6 +93,7 @@ public class RectCoordinates {
 
     /**
      * Gives the x, y, and z coordinates in String form.
+     *
      * @return String
      */
     @Override

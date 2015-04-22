@@ -1,7 +1,10 @@
-package walker.blue.path.lib;
+package walker.blue.path.lib.util;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import walker.blue.path.lib.floor.FloorConnector;
+import walker.blue.path.lib.node.GridNode;
 
 /**
  * Util Class which generates a grid which can be used in testing
@@ -76,6 +79,7 @@ public class GridGenerator {
 
     /**
      * Generates a 3D grid using the values in the char array.
+     *
      * @param grid3D char values indicating the type of grid node to generate.
      * @return generated grid
      */
