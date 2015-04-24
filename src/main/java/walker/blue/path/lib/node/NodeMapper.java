@@ -1,7 +1,5 @@
 package walker.blue.path.lib.node;
 
-import walker.blue.path.lib.node.RectCoordinates;
-
 /**
  * This class can be used to convert between the grid coordinate system
  * that uses indices to determine the distance between nodes and a real world
@@ -45,7 +43,7 @@ public class NodeMapper {
      * rectangular coordinates.
      *
      * @param realLoc real world coordinates
-     * @return
+     * @return location of the grid
      */
     public RectCoordinates getGridLocation(RectCoordinates realLoc) {
         int xIndex = (int)(realLoc.getY() / nodeDistance);

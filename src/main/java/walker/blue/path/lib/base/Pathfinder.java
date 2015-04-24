@@ -16,7 +16,7 @@ public interface Pathfinder<E, T> {
      * @param searchArea the space that is used in the path search
      * @param start the start node
      * @param dest the end node
-     * @return
+     * @return List containing the calculated path
      */
     List<E> findPath(T searchArea, E start, E dest);
 }

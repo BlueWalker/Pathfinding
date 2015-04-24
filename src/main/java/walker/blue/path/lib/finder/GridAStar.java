@@ -93,7 +93,6 @@ public class GridAStar extends AbstractPathfinder<GridNode, List<List<GridNode>>
      *
      * @param node          the current node being visited in the path search
      * @param neighbor      a neighbor of node
-     * @return              void
      */
     protected void computeBestPath(GridNode node, GridNode neighbor) {
         int nodeNeighborDistance = distanceBetweenNodes(node, neighbor);

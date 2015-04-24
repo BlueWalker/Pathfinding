@@ -32,7 +32,11 @@ public class FloorSequencer {
     private List<FloorConnector> floorConnectors;
 
     /**
-     * Class constructor.
+     * Class contructor
+     *
+     * @param pathfinder Patfinder used to calculate paths
+     * @param searchArea Search area for the building
+     * @param floorConnectors Floor connectors for the building
      */
     public FloorSequencer(GridAStar pathfinder,
                           List<List<List<GridNode>>> searchArea,

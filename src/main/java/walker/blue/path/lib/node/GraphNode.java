@@ -17,6 +17,11 @@ public class GraphNode extends AbstractPathfinderNode {
     /**
      * Class constructor taking in x, y, and z coordinates that
      * set the node's location.
+     *
+     * @param x X value of the nodes location
+     * @param y Y value of the nodes location
+     * @param z Z value of the nodes location
+     * @param index index of the node
      */
     public GraphNode(int x, int y, int z, int index) {
         super(x, y, z);
@@ -26,6 +31,9 @@ public class GraphNode extends AbstractPathfinderNode {
     /**
      * Class constructor taking in a RectCoordinates object
      * that sets the node's location.
+     *
+     * @param location Location of the node
+     * @param index index of the node
      */
     public GraphNode(RectCoordinates location, int index) {
         super(location);

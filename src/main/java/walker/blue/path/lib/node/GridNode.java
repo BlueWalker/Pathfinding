@@ -41,7 +41,7 @@ public class GridNode extends AbstractPathfinderNode {
     /**
      * Access method to determine if the node is traversable or not.
      *
-     * @return
+     * @return boolean representing whether the node is transversable
      */
     public boolean isTraversable() {
         return this.traversable;

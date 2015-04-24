@@ -99,7 +99,6 @@ public class ThetaStar extends GridAStar {
      * @param searchArea    a 2D list holding all of the GridNodes that describe the space
      * @param node          the current node being visited in the path search
      * @param neighbor      a neighbor of node
-     * @return              void
      */
     protected void computeBestPath(List<List<GridNode>> searchArea,
                                    GridNode node,
@@ -270,7 +269,7 @@ public class ThetaStar extends GridAStar {
      *
      * @param searchArea    a 2D list holding all of the GridNodes that describe the space
      * @param node          the node used to
-     * @return List<List<String>> a 2D list of strings where "S" represents the given node,
+     * @return A 2D list of strings where "S" represents the given node,
      *                      "V" marks that the node is within line of sight of "S",
      *                      "X" marks a boundary where sight does not pass, and
      *                      " " marks nodes that are out of sight of "S"

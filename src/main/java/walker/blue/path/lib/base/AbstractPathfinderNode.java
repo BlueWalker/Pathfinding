@@ -92,7 +92,7 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
     /**
      * Sets the g value for this node. Used when calculating a path.
      *
-     * @param val
+     * @param val new value of G
      */
     public void setG(double val) {
         this.g = val;
@@ -111,7 +111,7 @@ public abstract class AbstractPathfinderNode implements Comparable<AbstractPathf
     /**
      * Sets the h value for this node. Used when calculating a path.
      *
-     * @param val
+     * @param val new value of H
      */
     public void setH(double val) {
         this.h = val;
