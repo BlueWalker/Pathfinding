@@ -1,6 +1,8 @@
 Pathfinding
 ===
 
+[![Build Status](https://travis-ci.org/BlueWalker/Pathfinding.svg)](https://travis-ci.org/BlueWalker/Pathfinding)
+
 Java implementations of both A\* and Theta\* pathfinding algorithms.
 
 Adding to your Java project
